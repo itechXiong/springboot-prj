@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xitech.app.portal.entity.XitechSysUser">
+  <resultMap id="BaseResultMap" type="com.xitech.app.portal.entity.XitechSysUser">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+    <result column="user_dept_id" jdbcType="VARCHAR" property="userDeptId" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_name, user_password, user_dept_id, create_date, creater, update_date, updater
+  </sql>
+  <select id="select" parameterType="com.xitech.app.portal.entity.XitechSysUser" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xitech_sys_user
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <insert id="insert" parameterType="com.xitech.app.portal.entity.XitechSysUser">
+    insert into xitech_sys_user (id, user_name, user_password, 
+      user_dept_id, create_date, creater, 
+      update_date, updater)
+    values (#{id,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
+      #{userDeptId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xitech.app.portal.entity.XitechSysUser">
+    insert into xitech_sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userPassword != null">
+        user_password,
+      </if>
+      <if test="userDeptId != null">
+        user_dept_id,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userDeptId != null">
+        #{userDeptId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectById" parameterType="String" resultMap="BaseResultMap">
+   SELECT * FROM xitech_sys_user WHERE ID = #{id}
+  
+  </select>
+</mapper>
