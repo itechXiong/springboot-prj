@@ -1,0 +1,3 @@
+基础框架：
+	1. 提供model层、service层、dao层的抽象
+	2. 提供32位UUID生成工具
