@@ -1,0 +1,54 @@
+实现的功能：
+		微服务的服务消费者，使用REST+Riboon的方式与服务提供者通信
+
+将项目设置成为可以在Eureka进行注册的服务(服务之间通信采用REST+ribbon的方式）------------服务消费者--------------
+1. 添加Eureka依赖
+			<dependencies>
+			  	<dependency>
+			  		<groupId>org.springframework.cloud</groupId>
+			  		<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			  	</dependency>
+			</dependencies>
+			  
+			  
+			 <!--  仅作为版本控制，并不进行依赖的引入 -->
+			<dependencyManagement>
+			  	<dependencies>
+			  		<dependency>
+			          <groupId>org.springframework.cloud</groupId>
+			          <artifactId>spring-cloud-dependencies</artifactId>
+			          <version>Greenwich.RELEASE</version>
+			          <type>pom</type>
+			          <scope>import</scope>
+			      </dependency>
+			  	</dependencies>
+			</dependencyManagement>
+
+
+2. 激活Eureka中的DiscoveryClient实现  ：  在springboot启动类上使用 @EnableDiscoveryClient
+3. 在项目的配置类中添加访问Rest服务的客户端实例：【RestTemplate是Spring提供的用于访问Rest服务的客户端】
+	并使用@LoadBalanced注解实现负载均衡。
+	***注意***： 一定要使用该注解，否则将会抛出unkown hostname错误
+	@LoadBalanced
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+	   // Do any additional configuration here
+	   return builder.build();
+	}
+
+4. 在application.properties配置eureka相关属性：
+	a. spring.application.name=XITECH_SYS_USER_WEB
+	b. xitech.eureka.instance.hostname=127.0.0.1
+	c. xitech.eureka.port=9999
+	d. #     ****** eureka.instance.hostname  表示注册中心的地址，在本配置文件中响应的配置项，server.port同理
+	        # 暂时无法理解配置项的含义
+	e. eureka.client.service-url.defaultZone=http://${xitech.eureka.instance.hostname}:${xitech.eureka.port}/eureka/
+    ***注意*** ： spring.application.name的配置中，不要使用下划线“_”,否则将跑出异常：Request URI does not contain a valid hostname
+
+5. 在controller中配置对外的访问接口（即暴露给互联网的方法），同时注入RestTemplate，并在接口中访问服务消费者
+	例如：restTemplate.getForXxxx(url,args)等方法 
+	url形式为： http://service-provider-name/path    
+			service-provider-name为服务提供者的名称（spring.application.name或者eureka中的status列最后的appName:port，port在为8080时将省略)
+			path 为接口名
+		例如：UP (1) - xyd-PC:XITECH-SYS-USER-WEB:8088 中，XITECH-SYS-USER-WEB即为"service-provider-name"的值,所以url为http://XITECH-SYS-USER-WEB/path
+	
