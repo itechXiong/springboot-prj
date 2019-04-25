@@ -1,0 +1,48 @@
+实现的功能：
+	微服务注册中心demo，实现Eureka注册中心，能发现和管理服务
+
+#微服务注册中心搭建步骤（spring cloud eureka版本）
+
+1. 新建maven项目
+2. 添加springboot 依赖、spring cloud eureka依赖
+	a. springboot依赖
+			<parent>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-parent</artifactId>
+				<version>2.1.4.RELEASE</version>
+			</parent>
+		
+	b. springcloud eureka依赖
+			<dependencies>
+		  		<dependency>
+			  		<groupId>org.springframework.cloud</groupId>
+			  		<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+			  	</dependency>
+		  	</dependencies>
+		  	<!-- 依赖版本的管理 ，不会引入实际的jar包--> 
+			  <dependencyManagement>
+			  	<dependencies>
+			  		<dependency>
+			          <groupId>org.springframework.cloud</groupId>
+			          <artifactId>spring-cloud-dependencies</artifactId>
+			          <version>Greenwich.RELEASE</version>
+			          <type>pom</type>
+			          <scope>import</scope>
+			      </dependency>
+			  	</dependencies>
+			  </dependencyManagement>
+			  
+			  
+3. 在启动类中添加注解
+	a. @SpringBootApplication  
+	b. @EnableEurekaServer
+		表示本项目将会成为注册中心（eureka），供服务进行注册和发现
+
+4. 添加eureka的配置
+	server.port=9999
+	eureka.instance.hostname=localhost  #eureka实例主机名
+	eureka.client.register-with-eureka=false # 禁止本项目向注册中心注册，因为本项目就是注册中心本身，所以需要禁止该行为，默认为true
+	eureka.client.fetch-registry=false  #表示不去检索其他的服务，因为服务注册中心本身的职责就是维护服务实例，它也不需要去检索其他服务
+	#     ****** eureka.instance.hostname  表示注册中心的地址，在本配置文件中响应的配置项，server.port同理
+	# 暂时无法理解配置项的含义
+	eureka.client.service-url.defaultZone=http://${eureka.instance.hostname}:${server.port}/eureka/
