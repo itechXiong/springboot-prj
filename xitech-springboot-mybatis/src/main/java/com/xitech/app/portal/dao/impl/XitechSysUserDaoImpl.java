@@ -6,15 +6,16 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.xitech.app.framework.common.dao.GenericBaseDao;
 import com.xitech.app.portal.dao.XitechSysUserDao;
 import com.xitech.app.portal.entity.XitechSysUser;
 
+/*@Transactional(readOnly=true)*/
 @Repository
-public class XitechSysUserDaoImpl implements XitechSysUserDao {
-
-	@Autowired
-	public SqlSession sqlSession;
+public class XitechSysUserDaoImpl extends GenericBaseDao<XitechSysUser> implements XitechSysUserDao {
 
 	@Override
 	public XitechSysUser findSysUserById() {
@@ -23,7 +24,25 @@ public class XitechSysUserDaoImpl implements XitechSysUserDao {
 		params.put("id", "064dcbcf3aa24dff8931c4011816a035");
 		String sqlPathPrefix = XitechSysUser.class.getName();
 		String sqlId = "selectById";
-		XitechSysUser sysUser = sqlSession.selectOne(sqlPathPrefix + "."+sqlId, params);
+		XitechSysUser sysUser = this.getSqlSession().selectOne(sqlPathPrefix + "."+sqlId, params);
 		return sysUser;
+	}
+
+	/*@Transactional(readOnly=false,
+			rollbackFor= {Exception.class},
+			propagation=Propagation.REQUIRED)*/
+	@Override
+	public String insertSysUser(XitechSysUser sysUser) {
+		// TODO Auto-generated method stub
+		
+		String sqlPathPrefix = XitechSysUser.class.getName();
+		String sqlId = "insertSelective";
+		int isSuccess = this.getSqlSession().insert(sqlPathPrefix+ "."+sqlId, sysUser);
+		String userId =  sysUser.getId();
+		if(userId != null) {
+			//throw new IllegalArgumentException("sdfa");
+		}
+		
+		return userId;
 	}
 }

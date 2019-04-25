@@ -30,14 +30,96 @@ spring-boot  mybatis集成步骤
 	spring.datasource.username= root
 		
 
-5、生成entity,dao,service,mapper(映射文件)
+5、生成entity,dao,service
 	
 	注：***(1) mybatis的sqlsession已经在springboot的Ioc容器中创建了，可直接注入，无需再次配置
 	   ***(2)application.properties中配置mybatis的相关属性
 	         例如：映射文件(*.xml)的路径，注意写法，可参考mybatis-spring-boot-autoconfigure的jar包中的spring-configuration-metadata.json
 		jar包中的spring-configuration-metadata.json包含了springboot配置mybatis的所有属性
+		
+6、编写访问数据库映射（XML方式或者MAPPER注解方式）
+	(1)XML方式
+		a.在application.properties[springboot指定的配置文件]配置mapper-locations属性：
+				例如： mybatis.mapper-locations=classpath*:/dir1/dir2/*.xml   
+		*****注意：当将映射文件放置在resource目录下时，classpath后必须有星号：“*”
+		b.生成mapper(映射文件)
+		c.设置映射文件的namespace属性为实体类的全路径名：com.xitech.app.portal.entity.XitechSysUser
+		
+	(2)MAPPER注解方式：@Mapper
+		a.在生成的dao接口上添加注解@Mapper（或者单独创建一个Mapper接口，添加@Mapper注解，然后再将Mapper接口注入dao中）
+		b.在添加了@Mapper注解的接口中编写方法，在方法上使用mybatis的sql注解（@select，@insert等等）
+		c.在注解中编写sql语句：@Select("select * from table_name")
+		d.在application.properties中开启驼峰式转换（即 表字段 user_name 自动转为  实体类属性 ： userName
+			#开启驼峰命名转换
+			mybatis.configuration.map-underscore-to-camel-case=true	
+
 6、编写controller
 7、编写app启动类，添加指定注解，以及包扫描信息
+
+
+
+
+
+
+
+################################################################################
+springboot 开启事务管理
+
+一、注解方式**************************************
+	a. 启动事务管理 (  @EnableTransactionManagement  :在启动类上添加该注解 )
+	
+	b. 在dao/service类中添加@Transactionnal注解（方法上的该注解会覆盖类上的注解的含义）
+	
+
+二、 xml声明式事务管理  ***************************
+	a. 编写xml配置文件
+	b. 在配置类中使用@ImportResource，引入xml
+		b.1  配置advice 
+			<tx:advice id="" transaction-manager="">  //transaction-manager默认会查找名为transactionManager的事务管理器，若不是该名字，则需要填写实际的事务管理器名称
+				<tx:attributes>
+					<tx:method="xxxx*" readonly="true"....../>   //事务属性的相关配置：isolation、readonly、rollbackfor等等
+				</tx:attributes>
+			</tx:advice>
+		
+		b.2 配置aop
+			<aop:config>
+				<aop:pointcut id="xx"  expression="execution(* xxx.ccc.xxx.*.*(..))"/>   //切入点定义，关键是切入点表达式：expression
+				<aop:advisor adivce-ref="" pointcut-ref=""/>   // advice：(tx:advice配置的id)  pointcut-ref: 切入点id
+			</aop:conifg>
+	c. 添加AOP依赖
+		<!-- AOP依赖 -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+		</dependency>
+		
+		
+################################################################################
+将项目设置成为可以在Eureka进行注册的服务(服务之间通信采用REST+ribbon的方式）------------服务提供者--------------
+1. 添加Eureka依赖
+			<dependencies>
+			  	<dependency>
+			  		<groupId>org.springframework.cloud</groupId>
+			  		<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			  	</dependency>
+			</dependencies>
+			  
+			  
+			 <!--  仅作为版本控制，并不进行依赖的引入 -->
+			<dependencyManagement>
+			  	<dependencies>
+			  		<dependency>
+			          <groupId>org.springframework.cloud</groupId>
+			          <artifactId>spring-cloud-dependencies</artifactId>
+			          <version>Greenwich.RELEASE</version>
+			          <type>pom</type>
+			          <scope>import</scope>
+			      </dependency>
+			  	</dependencies>
+			</dependencyManagement>
+
+
+2. 激活Eureka中的DiscoveryClient实现  ：   @EnableDiscoveryClient
 
 
 	

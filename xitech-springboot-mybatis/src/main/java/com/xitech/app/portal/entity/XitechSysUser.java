@@ -2,7 +2,9 @@ package com.xitech.app.portal.entity;
 
 import java.util.Date;
 
-public class XitechSysUser {
+import com.xitech.app.framework.common.entity.BaseEntity;
+
+public class XitechSysUser extends BaseEntity{
     private String id;
 
     private String userName;

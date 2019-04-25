@@ -33,16 +33,39 @@
 	
 	
 	<!-- 添加Mybatis依赖 -->
-	<dependency>
+	<!-- <dependency>
 	    <groupId>org.mybatis.spring.boot</groupId>
 	    <artifactId>mybatis-spring-boot-starter</artifactId>
 	    <version>2.0.1</version>
-	</dependency>
+	</dependency> -->
 	<!-- mysql依赖 -->
 	<dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
 	</dependency>
+	<!-- AOP依赖 -->
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjweaver</artifactId>
+	</dependency>
+	
+	<!-- 注册中心Eureka 依赖 -->
+  	<dependency>
+	  <groupId>org.springframework.cloud</groupId>
+	  <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+	</dependency>
+	<!-- <dependency>
+	   <groupId>org.springframework.cloud</groupId>
+	   <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+	</dependency> -->
+
+	
+	<!-- 自主开发的jar包依赖 -->
+	<dependency>
+      <groupId>com.xitech.app</groupId>
+      <artifactId>xitech-common-framework</artifactId>
+      <version>0.0.1-beta</version>
+    </dependency>
 	
     <dependency>
       <groupId>junit</groupId>
@@ -50,6 +73,20 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+          <groupId>org.springframework.cloud</groupId>
+          <artifactId>spring-cloud-dependencies</artifactId>
+          <version>Greenwich.RELEASE</version>
+          <type>pom</type>
+          <scope>import</scope>
+      </dependency>
+      
+  	</dependencies>
+  </dependencyManagement>
+  
   <build>
     <finalName>xitech-springboot-mybatis</finalName>
      <plugins>  
