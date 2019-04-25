@@ -1,3 +1,9 @@
+项目功能：
+	1. springboot使用Mybatis进行数据库操作
+	2. 开启事务管理
+	3. 集成eureka注册中心，能自动向注册中心注册，并向外提供服务
+
+
 spring-boot  mybatis集成步骤
 
 1、引入spring-boot依赖
