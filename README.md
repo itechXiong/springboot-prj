@@ -21,4 +21,4 @@
         实现功能：  
           a. springboot集成Mybatis访问数据库  
           b. 事务管理  
-          c. 服务提供者demo  
+          c. 服务提供者demo（若要部署服务提供者为集群模式，则修改server.port值即可，其他与Eureka注册中心相关的配置保持不变） 
