@@ -10,7 +10,7 @@
            
 二、 xitech-springboot-eureka  
     1. 描述：  
-       Eureka版本的注册中心demo 
+       Eureka版本的注册中心demo  
        Eureka版本的中心集群
      
 三、xitech-springboot-eureka-web  
