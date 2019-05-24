@@ -37,6 +37,12 @@
 	   <groupId>org.springframework.cloud</groupId>
 	   <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
 	</dependency> -->
+	
+	<!-- Feign框架的依赖 -->
+	<dependency>
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-starter-openfeign</artifactId>
+	</dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

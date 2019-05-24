@@ -1,4 +1,4 @@
-package com.xitech.app.bootstrap;
+package com.xitech.app.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

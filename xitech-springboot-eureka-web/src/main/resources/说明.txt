@@ -1,5 +1,6 @@
 实现的功能：
 		微服务的服务消费者，使用REST+Riboon的方式与服务提供者通信
+		微服务的服务消费者，使用Feign的方式与服务提供者通信
 
 将项目设置成为可以在Eureka进行注册的服务(服务之间通信采用REST+ribbon的方式）------------服务消费者--------------
 1. 添加Eureka依赖
@@ -25,7 +26,9 @@
 			</dependencyManagement>
 
 
-2. 激活Eureka中的DiscoveryClient实现  ：  在springboot启动类上使用 @EnableDiscoveryClient
+2. 激活Eureka中的DiscoveryClient实现  ：  
+	在springboot启动类上使用 @EnableDiscoveryClient
+
 3. 在项目的配置类中添加访问Rest服务的客户端实例：【RestTemplate是Spring提供的用于访问Rest服务的客户端】
 	并使用@LoadBalanced注解实现负载均衡。
 	***注意***： 一定要使用该注解，否则将会抛出unkown hostname错误
@@ -41,9 +44,8 @@
 	b. xitech.eureka.instance.hostname=127.0.0.1
 	c. xitech.eureka.port=9999
 	d. #     ****** eureka.instance.hostname  表示注册中心的地址，在本配置文件中响应的配置项，server.port同理
-	        # 暂时无法理解配置项的含义
-	e. eureka.client.service-url.defaultZone=http://${xitech.eureka.instance.hostname}:${xitech.eureka.port}/eureka/
-    ***注意*** ： spring.application.name的配置中，不要使用下划线“_”,否则将跑出异常：Request URI does not contain a valid hostname
+	e. eureka.client.service-url.defaultZone=http://${xitech.eureka.instance.hostname}:${xitech.eureka.port}/eureka/    ---- 注册中心地址url
+    ***注意*** ： spring.application.name的配置中，不要使用下划线“_”,否则在服务之间调用时将抛出异常：Request URI does not contain a valid hostname
 
 5. 在controller中配置对外的访问接口（即暴露给互联网的方法），同时注入RestTemplate，并在接口中访问服务消费者
 	例如：restTemplate.getForXxxx(url,args)等方法 
@@ -51,4 +53,86 @@
 			service-provider-name为服务提供者的名称（spring.application.name或者eureka中的status列最后的appName:port，port在为8080时将省略)
 			path 为接口名
 		例如：UP (1) - xyd-PC:XITECH-SYS-USER-WEB:8088 中，XITECH-SYS-USER-WEB即为"service-provider-name"的值,所以url为http://XITECH-SYS-USER-WEB/path
+
+
+
+********************************************************************************************************
+将项目设置成为可以在Eureka进行注册的服务(服务之间通信采用Feign的方式）------------服务消费者--------------
+1. 引入Eureka客户端依赖（包括：版本控制、jar包引入）
+			<!-- 实际的jar包引入  -->
+			<dependencies>
+			  	<dependency>
+			  		<groupId>org.springframework.cloud</groupId>
+			  		<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			  	</dependency>
+			</dependencies>
+			  
+			  
+			 <!--  仅作为版本控制，并不进行依赖的引入 -->
+			<dependencyManagement>
+			  	<dependencies>
+			  		<dependency>
+			          <groupId>org.springframework.cloud</groupId>
+			          <artifactId>spring-cloud-dependencies</artifactId>
+			          <version>Greenwich.RELEASE</version>
+			          <type>pom</type>
+			          <scope>import</scope>
+			      </dependency>
+			  	</dependencies>
+			</dependencyManagement>
+**
+2. 引入Feign客户端依赖(***需要与上述1.中的spring-cloud的版本控制部分配合使用***)
+		<!-- Feign框架的依赖 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+
+		
+3. 启用Eureka客户端发现功能：
+	在启动类中使用@EnableDiscoveryClient注解
+
+	
+4. 在application.properties配置eureka相关属性：
+	a. spring.application.name=XITECH_SYS_USER_WEB   ----本服务的名称
+	b. xitech.eureka.instance.hostname=127.0.0.1	 ----eureka实例
+	c. xitech.eureka.port=9999						 ----结合eureka.client.service-url.defaultZone属性进行设置
+	d. #     ****** eureka.instance.hostname  表示注册中心的地址，在本配置文件中响应的配置项，server.port同理
+	e. eureka.client.service-url.defaultZone=http://${xitech.eureka.instance.hostname}:${xitech.eureka.port}/eureka/     ---- 注册中心地址url
+    ***注意*** ： spring.application.name的配置中，不要使用下划线“_”,否则将抛出异常：Request URI does not contain a valid hostname
+    
+
+5. 启用feign客户端(*******************注意：容易遗忘该注解)
+	在启动类中添加@EnableFeignClients   //启用feign客户端        *******是@EnableFeignClients 而不是 @EnableFeignClient
+
+6. 创建Feign调用接口（因为Feign是声明式的web服务客户端，所以调用其他web服务时，使用接口）
+	在接口上使用@FeignClient
+		可选属性如下：
+			name：指定FeignClient的名称，如果项目使用了Ribbon，name属性会作为微服务的名称，用于服务发现
+			url: url一般用于调试，可以手动指定@FeignClient调用的地址
+			decode404:当发生http 404错误时，如果该字段位true，会调用decoder进行解码，否则抛出FeignException
+			configuration: Feign配置类，可以自定义Feign的Encoder、Decoder、LogLevel、Contract
+			fallback: 定义容错的处理类，当调用远程接口失败或超时时，会调用对应接口的容错逻辑，fallback指定的类必须实现@FeignClient标记的接口
+			fallbackFactory: 工厂类，用于生成fallback类示例，通过这个属性我们可以实现每个接口通用的容错逻辑，减少重复的代码
+			path: 定义当前FeignClient的统一前缀
+	例如：
+		@FeignClient("stores")
+		public interface StoreClient {
+		    
+		}
+
+7. 在6.中的接口中，创建调用方法（@RequestMapping注解表示如何服务提供者的方法，即相当于如何使用http方式访问服务提供者）
+	
+	例如：以get方式服务提供者的“/stores”接口
+		普通web页面访问  ：http://providerhost:port/prjContext/stores
+		
+		Feign访问方式：
+		@RequestMapping(method = RequestMethod.GET, value = "/stores")
+		List<Store> getStores(parameterType parameterName);
+		
+		***********注意：调用方法的参数列表是传递给服务提供者方法的参数，并且参数名需要与服务提供者的参数名一致，否则报400
+
+8. 在controller中访问7.中的方法即可
+	
+	
 	

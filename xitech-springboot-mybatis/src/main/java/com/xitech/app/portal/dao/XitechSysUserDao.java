@@ -5,7 +5,7 @@ import com.xitech.app.portal.entity.XitechSysUser;
 
 public interface XitechSysUserDao extends BaseDao<XitechSysUser>{
 	
-	public XitechSysUser findSysUserById();
+	public XitechSysUser findSysUserById(String userId);
 	
 	public String insertSysUser(XitechSysUser sysUser);
    

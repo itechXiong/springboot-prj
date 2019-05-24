@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xitech.app.framework.common.utils.KeyGeneratorUtils;
@@ -21,8 +22,8 @@ public class AppIndexController {
 	private XitechSysUserMapper xitechSysUserMapper;
 	
 	@RequestMapping("/findUser")
-	public XitechSysUser findSysUser(){
-		return xitechSysUserDao.findSysUserById();
+	public XitechSysUser findSysUser(@RequestParam String userId){
+		return xitechSysUserDao.findSysUserById(userId);
 	}
 	
 	@RequestMapping("/findUserByMapper")

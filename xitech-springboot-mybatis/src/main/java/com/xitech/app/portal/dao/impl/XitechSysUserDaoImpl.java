@@ -18,10 +18,10 @@ import com.xitech.app.portal.entity.XitechSysUser;
 public class XitechSysUserDaoImpl extends GenericBaseDao<XitechSysUser> implements XitechSysUserDao {
 
 	@Override
-	public XitechSysUser findSysUserById() {
+	public XitechSysUser findSysUserById(String userId) {
 		// TODO Auto-generated method stub
 		Map<String,Object> params = new HashMap<>();
-		params.put("id", "064dcbcf3aa24dff8931c4011816a035");
+		params.put("id", userId);
 		String sqlPathPrefix = XitechSysUser.class.getName();
 		String sqlId = "selectById";
 		XitechSysUser sysUser = this.getSqlSession().selectOne(sqlPathPrefix + "."+sqlId, params);
