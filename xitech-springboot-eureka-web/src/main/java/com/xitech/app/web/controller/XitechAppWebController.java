@@ -22,7 +22,7 @@ public class XitechAppWebController {
 	@RequestMapping("/findUser")
 	public String findUser() {
 		//restTemplate.getForEntity("http://localhost:8888", responseType)
-		return restTemplate.getForEntity("http://XITECH-SYS-USER-SERVICE/findUser", String.class).getBody();
+		return restTemplate.getForEntity("http://userService/clusterTest", String.class).getBody();
 	}
 	
 	@RequestMapping("/findUserById")

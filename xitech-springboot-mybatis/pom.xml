@@ -13,6 +13,9 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.4.RELEASE</version>
 	</parent>
+	<properties>
+		<curator.version>4.2.0</curator.version>
+	</properties>
   <dependencies>
   	<!-- 使用spring-boot的方式一： -->
 	<!-- Add typical dependencies for a web application -->
@@ -58,7 +61,53 @@
 	   <groupId>org.springframework.cloud</groupId>
 	   <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
 	</dependency> -->
-
+	<!-- <dependency>
+	  <groupId>de.codecentric</groupId>
+	  <artifactId>spring-boot-admin-starter-client</artifactId>
+	  <version>2.1.4</version>
+	</dependency> -->
+	
+	<!-- rocket MQ -->
+	<dependency>
+	  <groupId>org.apache.rocketmq</groupId>
+	  <artifactId>rocketmq-client</artifactId>
+	  <version>4.5.0</version>
+	</dependency>
+	
+	<!-- zookeeper的客户端curator依赖 -->
+	<dependency>
+	     <groupId>org.apache.curator</groupId>
+	     <artifactId>curator-framework</artifactId>
+	     <version>${curator.version}</version>
+	</dependency>
+	<dependency>
+	     <groupId>org.apache.curator</groupId>
+	     <artifactId>curator-recipes</artifactId>
+	     <version>${curator.version}</version>
+	</dependency>
+	<!-- <version>${curator.version}</version> -->
+	<!-- zookeeper依赖（spring cloud方式的依赖） -->
+	<!-- <dependency>
+	    <groupId>org.springframework.cloud</groupId>
+	    <artifactId>spring-cloud-starter-zookeeper-all</artifactId>
+	    <exclusions>
+	        <exclusion>
+	            <groupId>org.apache.zookeeper</groupId>
+	            <artifactId>zookeeper</artifactId>
+	        </exclusion>
+	    </exclusions>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.zookeeper</groupId>
+	    <artifactId>zookeeper</artifactId>
+	    <version>3.4.12</version>
+	    <exclusions>
+	        <exclusion>
+	            <groupId>org.slf4j</groupId>
+	            <artifactId>slf4j-log4j12</artifactId>
+	        </exclusion>
+	    </exclusions>
+	</dependency> -->
 	
 	<!-- 自主开发的jar包依赖 -->
 	<dependency>
@@ -98,6 +147,10 @@
                  <source>1.8</source>  
                  <target>1.8</target>  
              </configuration>  
+         </plugin>
+         <plugin>
+         	<groupId>org.springframework.boot</groupId>
+         	<artifactId>spring-boot-maven-plugin</artifactId>
          </plugin>  
      </plugins>  
   </build>
