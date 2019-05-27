@@ -20,11 +20,11 @@ import com.xitech.app.zklock.XitechZookeeperLock;
 @Repository
 public class XitechSysUserDaoImpl extends GenericBaseDao<XitechSysUser> implements XitechSysUserDao {
 
-	@Autowired
+	//@Autowired //实际测试、使用均需要使用Autowired
 	private XitechZookeeperClient client;
 	//CuratorFramework client;
 	
-	@Autowired
+	//@Autowired   //实际测试、使用均需要使用Autowired
 	private XitechZookeeperLock lock;
 	//InterProcessMutex lock;
 	
@@ -148,16 +148,13 @@ public class XitechSysUserDaoImpl extends GenericBaseDao<XitechSysUser> implemen
 	@PostConstruct
 	public void start() {
 		System.out.println("*****************init zookeeper*******************");
-		//RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
-		//client = CuratorFrameworkFactory.newClient("localhost:2181", retryPolicy);
-		client.start();
-		
-		//this.lock = new InterProcessMutex(client,"/springboot");//new XitechZookeeperLock(client);
+		//client.start();
+
 	}
 	
 	@PreDestroy
 	public void close() {
 		System.out.println("*****************close zookeeper*******************");
-		client.close();
+		//client.close();
 	}
 }

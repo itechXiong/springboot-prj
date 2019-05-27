@@ -15,6 +15,7 @@
 	</parent>
 	<properties>
 		<curator.version>4.2.0</curator.version>
+		<RELEASE.VERSION>2.0.2</RELEASE.VERSION>
 	</properties>
   <dependencies>
   	<!-- 使用spring-boot的方式一： -->
@@ -73,6 +74,12 @@
 	  <artifactId>rocketmq-client</artifactId>
 	  <version>4.5.0</version>
 	</dependency>
+	
+	<!-- <dependency>
+	    <groupId>org.apache.rocketmq</groupId>
+	    <artifactId>rocketmq-spring-boot-starter</artifactId>
+	    <version>${RELEASE.VERSION}</version>
+	</dependency> -->
 	
 	<!-- zookeeper的客户端curator依赖 -->
 	<dependency>
