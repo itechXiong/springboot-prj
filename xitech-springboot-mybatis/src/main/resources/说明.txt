@@ -28,6 +28,11 @@ spring-boot  mybatis集成步骤
 	</dependency>
 
 3、引入数据库驱动包（mysql、oracle、sqlserver...）
+	Mysql:
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
 
 4、配置数据源
 	spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
