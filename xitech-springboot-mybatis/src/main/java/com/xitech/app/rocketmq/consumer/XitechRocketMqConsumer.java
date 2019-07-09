@@ -32,10 +32,10 @@ public class XitechRocketMqConsumer {
         try {
             //订阅PushTopic下Tag为push的消息
             consumer.subscribe("TopicTest", "push");
-            consumer.setPullThresholdForQueue(10);
-            consumer.setPullBatchSize(10);
-            consumer.setConsumeThreadMax(2);
-            consumer.setConsumeThreadMin(1);
+            //consumer.setPullThresholdForQueue(10);
+            //consumer.setPullBatchSize(10);
+            consumer.setConsumeThreadMax(6);
+            consumer.setConsumeThreadMin(2);
  
             //设置Consumer第一次启动是从队列头部开始消费还是队列尾部开始消费
             //如果非第一次启动，那么按照上次消费的位置继续消费
@@ -51,7 +51,7 @@ public class XitechRocketMqConsumer {
  
                         System.out.println("消费响应：msgId : " + messageExt.getMsgId() + ",  msgBody : " + messageBody);//输出消息内容
                     }
-                    Thread.sleep(2000);
+                    //Thread.sleep(2000);
                 } catch (Exception e) {
                     e.printStackTrace();
                     return ConsumeConcurrentlyStatus.RECONSUME_LATER; //稍后再试
