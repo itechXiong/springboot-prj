@@ -44,5 +44,5 @@
 	eureka.client.register-with-eureka=false # 禁止本项目向注册中心注册，因为本项目就是注册中心本身，所以需要禁止该行为，默认为true
 	eureka.client.fetch-registry=false  #表示不去检索其他的服务，因为服务注册中心本身的职责就是维护服务实例，它也不需要去检索其他服务
 	#     ****** eureka.instance.hostname  表示注册中心的地址，在本配置文件中响应的配置项，server.port同理
-	# 暂时无法理解配置项的含义
+	#服务注册中心地址url  主机名和端口自定义，后缀"/eureka/"固定写法
 	eureka.client.service-url.defaultZone=http://${eureka.instance.hostname}:${server.port}/eureka/
