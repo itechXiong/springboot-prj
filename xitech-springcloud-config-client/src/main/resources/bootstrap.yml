@@ -1,0 +1,25 @@
+#eureka注册中心
+eureka:
+   client:
+      service-url:
+         defaultZone: http://localhost:9998/eureka/
+      enabled: false
+         
+         
+#配置中心
+spring:
+   cloud:
+      config:
+            uri: http://localhost:9996/   #config server地址    配置名为“uri” 不是“url”
+            label: master # 访问的分支（相对git来说）
+            name: config-test  # 访问的配置文件的名称，可以多个，使用逗号分隔
+            profile: dev      #访问的是配置文件的类型版本（即，pro,dev,test）
+
+#management:
+#   endpoints:
+#      web:
+#         exposure:
+#            include: "*"  #对于特殊字符 需要使用引号包含，例如  ：  "**$$.example"
+#   endpoint:
+#      health:
+#         show-details: always

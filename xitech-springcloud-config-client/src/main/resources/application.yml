@@ -1,0 +1,7 @@
+#端口
+server:
+   port: 9997
+
+spring:
+   application:
+            name: config-client
