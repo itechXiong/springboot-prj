@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableAutoConfiguration
 @EnableTransactionManagement
-@ComponentScan(basePackages={"com.xitech.app.portal.controller,com.xitech.app.portal.dao","com.xitech.app.rocketmq"})
+@ComponentScan(basePackages={"com.xitech.app.portal.controller,com.xitech.app.portal.dao","com.xitech.app.rocketmq","com.xitech.app.zkconfig"})
 @MapperScan(basePackages= {"com.xitech.app.portal.mapper"})
 @ImportResource(value= {"classpath*:springboot/*.xml"})
 public class XitechAppConfig {

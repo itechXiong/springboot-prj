@@ -24,7 +24,7 @@ public class XitechSysUserDaoImpl extends GenericBaseDao<XitechSysUser> implemen
 	private XitechZookeeperClient client;
 	//CuratorFramework client;
 	
-	//@Autowired   //实际测试、使用均需要使用Autowired
+	@Autowired   //实际测试、使用均需要使用Autowired
 	private XitechZookeeperLock lock;
 	//InterProcessMutex lock;
 	

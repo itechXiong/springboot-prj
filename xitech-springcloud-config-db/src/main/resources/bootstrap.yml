@@ -1,0 +1,37 @@
+#端口
+server:
+   port: 9996
+
+#eureka注册中心
+eureka:
+   client:
+      enabled: false
+      service-url:
+         defaultZone: http://localhost:9998/eureka/
+     
+
+         
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        jdbc:
+          sql: SELECT `KEY`, `VALUE` FROM PROPERTIES WHERE application =? AND profile =? AND label =?
+      label: master
+    refresh:
+        refreshable: none
+  profiles:
+    active: jdbc
+
+  ## 数据配置
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/itechapp?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+logging:
+  level:
+    org.springframework.jdbc.core: DEBUG
+    org.springframework.jdbc.core.StatementCreatorUtils: Trace

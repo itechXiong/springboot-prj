@@ -1,0 +1,13 @@
+server:
+   port: 8088
+   
+   
+spring:
+   application:
+      name: hystrixFeignServer
+
+      
+eureka:
+   client:
+      service-url:
+         defaultZone: http://localhost:9998/eureka/

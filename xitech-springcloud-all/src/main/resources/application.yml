@@ -1,0 +1,34 @@
+spring:
+   application:
+      name: hystrixFeign
+
+      
+eureka:
+   client:
+      enabled: true
+      service-url:
+         defaultZone: http://localhost:9998/eureka/
+#开启feign中的hystrix功能，默认是false
+feign:
+   hystrix:
+      enabled: true
+      
+management:
+   security:
+      enabled: false
+   endpoints:
+      web:
+         exposure:
+            include: '*'
+            
+            
+hystrix:
+   command:
+      default:
+         execution:
+            isolation:
+               thread:
+                  timeoutInMilliseconds: 500
+                  
+                  
+#      getCon:         execution:            isolation:               thread:                  timeoutInMilliseconds: 2000

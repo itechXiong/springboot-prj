@@ -9,7 +9,7 @@ import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-
+@Component
 public class XitechZookeeperLock {
 
 	private InterProcessReadWriteLock lock;

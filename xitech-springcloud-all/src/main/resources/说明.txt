@@ -1,0 +1,103 @@
+********************************Spring-Cloud-OpenFeign*********************
+服务间的通信：feign
+
+1. 使用Feign需要声明一个接口以及相应的注解（@EnableFeignClients、@FeignClient）
+2. Feign特性：
+	a. 可插拔式注解（包括Feign注解、JAX-RS注解）
+	b. 集成Ribbon和Hystrix
+	c. 支持Ribbon负载均衡
+	d. 可插拔式的解码器和编码器
+	e. 支持HTTP请求和相应的压缩
+	
+	
+3. Feign工作原理：
+	a. @EnableFeignClients会扫描包，并查找@FeignClient注解以及其类（严格来说是接口【@FeignClient只能修饰接口】），然后进行处理并加入到Spring Ioc中
+	b. 当进行调用时，通过jdk代理为@FeignClient中的每一个方法生成RestTemplate对象，该对象包含request请求需要的信息。
+	c. RestTemplate对象会创建request对象，并交由client处理（client值java的URLConnection、Apache的Http Client、OkHttp等）。
+	d. LoadBalanceClient最后会封装上一步的client对象，然后结合Ribbon负载均衡，在服务之间进行调用。
+	
+	
+4. Feign开启GZIP压缩
+	feign.compression.request.enabled=true;//开启请求压缩
+	feign.compression.response.enabled=true;//开启响应压缩
+	其他属性查看spring-cloud-openfeign-core.xx.jar包中的spring-configuration-metadata.json中
+	
+	*** 开启GZIP压缩功能之后，方法的返回类型需要修改为：ResponseEntity<byte[]>，否则出现乱码。
+	
+	
+5. 配置属性
+	a. 指定的feignName ---> feign.client.config.'feignName'.xxx=
+	b. 全局                     ---> feign.client.config.default.xxx=
+	c. feign.client.default-to-properties=false 改变feign属性文件的优先级（默认是properties的属性值会覆盖java代码设置的属性值。）
+	
+6. 开启日志
+	a. 在application.properties或者application.yml文件定义日志级别
+			logging.level.'feign接口全限定类名' = debug    (yml方式类似)
+	b. 在Configuration类，或者启动类中定义日志bean类。
+			@Bean
+			Logger.Level methodName(){
+				return Logger.Level.Full;
+			}
+
+7. feign超时设置
+	超时设置分为两个部分：Ribbon调用和Hystrix调用（高版本的hystrix默认是关闭，使用feign.hystrix.enabled=true开启）
+	
+	
+8. http客户端替换
+	a. 添加依赖：feign的依赖、okHttp的依赖（org.github.openfeign -->  feign-okhttp)
+	b. 设置属性： feign.httpclient.enabled=false,feign.okhttp.enabled=true;
+	
+	
+9. feign集成ribbon和hystrix之后，首次调用可能失败的原因：由于Bean的装配以及懒加载机制导致的。
+	解决方案：
+		设置hystrix的超时时间。
+		
+10. 返回图片数据（一般是返回byte[]数组）
+	需要修改方法的返回值为Response
+
+11. 使用feign在服务之间调用时，token可能会丢失，此时需要在调用之前，将token加入request的header中。
+
+
+
+
+********************************Spring-Cloud-Ribbon*********************
+
+1. 负载均衡类型：
+	集中式负载均衡： 位于互联网与服务提供者之间（例如F5,LVS,Nginx），也叫服务端负载均衡
+	进程内负载均衡：从实例库中选取一个实例进行流量导入，也叫客户端负载均衡
+
+2. 负载均衡策略：总共7种，默认是轮询方式
+	a. 全局负载均衡策略配置：
+		在@Configuration类中增加IRule类型的bean定义：
+			@Bean
+			public IRule ribbonRule(){
+				return new RandomRule();
+			}
+	b. 单个服务使用指定的负载均衡策略。
+		代码+注解 方式：
+			1). 创建一个配置类，使用@Configuration、@AvoidScan注解，在类中创建IRule的bean定义(如下所示：)。
+				@Bean
+				public IRule ribbonRule(){
+					return new RandomRule();
+				}
+				
+			2). 在应用的配置类或者启动类中，增加如下代码，不让spring扫描使用@AvoidScan注解的类
+				@ComponentScan(excludeFilters={@ComponentScan.Filter(type=FilterType.ANNOTATION,value={AvoidScan.class})})
+			3). 在应用的配置类或者启动类中，增加@RibbonClient或者@RibbonClients，如下所示：
+				@RibbonClient(name="单独使用负载均衡策略的服务名",configuration=xxx.class)   xxx.class为1)中创建的配置类
+				或者
+				@RibbonClients(value={
+					@RibbonClient(name="单独使用负载均衡策略的服务名1",configuration=xxx.class),
+					@RibbonClient(name="单独使用负载均衡策略的服务名2",configuration=xxx.class)
+				})
+				
+		配置文件方式：
+			<serviceName>.ribbon.NFLoadBalancerRuleClassName = com.xxx.xxx.RandomRule #serviceName是需要单独制定负载均衡的服务名
+			
+			
+3. Ribbon超时与重试				
+		<serviceName>.ribbon.属性名（超时和重试属性的名称）= 值
+		
+4. Ribbon饥饿加载（启动时加载上下文环境）
+	ribbon.eager-load.enabled=true
+	ribbon.eager-load.clients=<serviceName1>,<serviceName2>,<serviceName3>.......
