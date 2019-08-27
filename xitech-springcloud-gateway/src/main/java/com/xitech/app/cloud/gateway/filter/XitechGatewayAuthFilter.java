@@ -7,10 +7,10 @@ import org.springframework.http.HttpRequest;
 import org.springframework.web.server.ServerWebExchange;
 
 import reactor.core.publisher.Mono;
+// implements GlobalFilter,Ordered
+public class XitechGatewayAuthFilter{
 
-public class XitechGatewayAuthFilter implements GlobalFilter,Ordered{
-
-	@Override
+	/*@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		// TODO Auto-generated method stub
 		HttpRequest req = exchange.getRequest();
@@ -22,6 +22,6 @@ public class XitechGatewayAuthFilter implements GlobalFilter,Ordered{
 		// TODO Auto-generated method stub
 		//定义filter的执行顺序
 		return Ordered.HIGHEST_PRECEDENCE+10001;
-	}
+	}*/
 
 }
