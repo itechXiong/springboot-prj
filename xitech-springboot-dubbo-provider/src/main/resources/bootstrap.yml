@@ -1,0 +1,18 @@
+#server:
+#   port: 8088
+   
+   
+spring:
+   application:
+      name: xitech-springboot-dubbo-provider
+
+     
+dubbo:
+   base:
+      scan-packages: com.xitech.app.provider.impl
+   #dubbo 协议信息
+   protocol: 
+      name: dubbo
+      port: 9999
+   registry:
+      address: N/A

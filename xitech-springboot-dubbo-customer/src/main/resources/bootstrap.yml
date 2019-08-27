@@ -1,0 +1,7 @@
+
+   
+spring:
+   application:
+      name: xitech-springboot-dubbo-customer
+
+     

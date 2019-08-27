@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @SpringBootApplication
-@RestController
-@RequestMapping("/gateway")
+//@RestController
+//@RequestMapping("/gateway")
 public class XitechGatewayApp 
 {
     public static void main( String[] args )
@@ -20,8 +20,8 @@ public class XitechGatewayApp
     	SpringApplication.run(XitechGatewayApp.class, args);
     }
     
-    @RequestMapping("/test")
+   /* @RequestMapping("/test")
     public String gatewayTest() {
     	return "test";
-    }
+    }*/
 }
