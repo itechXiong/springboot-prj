@@ -1,0 +1,77 @@
+server:
+   port: 8081
+
+spring:
+   application:
+      name: xitech-springcloud-gateway
+   #配置数据源
+   datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/xitech-app
+      password: root
+      username: root
+      hikari:
+         maximum-pool-size: 5
+         minimum-idle: 5
+         connection-timeout: 200024
+   hibernate.dialect: mysql
+   data:
+      jpa:
+         repositories:
+            enabled: true # Whether to enable JPA repositories.
+   jpa:
+      atabase: mysql # Target database to operate on, auto-detected by default. Can be alternatively set using the "databasePlatform" property.
+      generate-ddl: true # Whether to initialize the schema on startup.
+      hibernate:
+         dialect: msyql
+         ddl-auto: update # DDL mode. This is actually a shortcut for the "hibernate.hbm2ddl.auto" property. Defaults to "create-drop" when using an embedded database and no schema manager was detected. Otherwise, defaults to "none".
+      show-sql: true # Whether to enable logging of SQL statements.
+   cloud:
+    gateway:
+#       discovery:
+#          locator:
+#             enabled: true
+#             lowerCaseServiceId: true
+       enabled: true
+       routes:
+       - id: test_route
+         uri: http://localhost:8088/test/head
+         predicates:
+         - Path=/test
+         filters:
+         - AddRequestHeader=X-Request-Acme,t-Header-value 
+       
+#hystrix过滤器
+#         uri: http://localhost:8088/test/Hystrix?isSleep=true # isSleep=true需要在访问网关的时候传递
+#         predicates:
+#         - Path=/test/Hystrix   #Path的“首字母一定要大写”
+#         filters:
+#         - name: Hystrix
+#           args:
+#              name: fallbackcmd
+#              fallbackUri: forward:/fallbackk
+
+       
+eureka: 
+   client: 
+      enabled: false      
+        
+logging:
+   level:
+      org.springframework.cloud.gateway: DEBUG
+      
+#http://127.0.0.1:8088/hystrixFeignApi/content/header
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  security:
+    enabled: false
+    
+#数据库配置
+
+
+
+   

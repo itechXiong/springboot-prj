@@ -1,0 +1,11 @@
+spring:
+   application:
+      name: gatewayservice
+eureka: 
+   client: 
+      enabled: false
+      
+#eureka:
+#   client:
+#      service-url:
+#         defaultZone: http://localhost:9998/eureka/

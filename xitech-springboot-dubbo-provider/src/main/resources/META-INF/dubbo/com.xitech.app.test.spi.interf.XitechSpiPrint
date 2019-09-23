@@ -1,0 +1,2 @@
+impl=com.xitech.app.test.spi.impl.XitechSpiPrintImpl
+dubbo=com.xitech.app.test.spi.impl.XitechSpiPrintWrapper

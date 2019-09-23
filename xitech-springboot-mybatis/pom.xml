@@ -35,7 +35,11 @@
 		<scope>import</scope>
 	</dependency> -->
 	
-	
+	<!-- cache相关的依赖 -->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-cache</artifactId>
+	</dependency>
 	<!-- 添加Mybatis依赖 -->
 	<!-- <dependency>
 	    <groupId>org.mybatis.spring.boot</groupId>

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  *
  */
 @SpringBootApplication
-@EnableHystrix//开启hystrix
+//@EnableHystrix//开启hystrix
 @EnableFeignClients
 @EnableDiscoveryClient
 @ComponentScan(basePackages= {"com.xitech.app.hystrix"})

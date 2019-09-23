@@ -36,7 +36,7 @@ public class XitechRocketMqConsumer {
             //consumer.setPullBatchSize(10);
             consumer.setConsumeThreadMax(1);
             consumer.setConsumeThreadMin(1);
-            consumer.setConsumeMessageBatchMaxSize(10);
+            //consumer.setConsumeMessageBatchMaxSize(10);
 
  
             //设置Consumer第一次启动是从队列头部开始消费还是队列尾部开始消费

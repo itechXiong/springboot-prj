@@ -1,0 +1,43 @@
+Dubbo spi 包装扩展类
+方式一：
+1. 引入Dubbo依赖
+2. 在src/main/resources目录下创建目录：META-INF/dubbo, META-INF/dubbo/internal, META-INF/services三个中的一个即可
+3. 在步骤2中创建的目录下，创建一个文件，文件名是想要扩展的接口名（全限定名），例如：com.xitech.app.test.spi.interf.XitechSpiPrint
+4. 在文件中写入如下内容（***注意顺序***）：
+	#包装扩展类
+	dubbo=com.xitech.app.test.spi.impl.XitechSpiPrintWrapper
+	#被包装的最终实现类
+	impl=com.xitech.app.test.spi.impl.XitechSpiPrintImpl
+	
+5. 在包装类的构造函数中注入XitechSpiPrint接口类型的变量（表示会将impl对应的实现类注入包装类）
+6. 在接口中的方法添加@Adaptive("impl")注解，其中impl表示被包装的实现类的key（参考步骤4中的配置）
+
+
+方式二：
+1. 引入Dubbo依赖
+2. 在src/main/resources目录下创建目录：META-INF/dubbo, META-INF/dubbo/internal, META-INF/services三个中的一个即可
+3. 在步骤2中创建的目录下，创建一个文件，文件名是想要扩展的接口名（全限定名），例如：com.xitech.app.test.spi.interf.XitechSpiPrint
+4. 在文件中写入如下内容（***注意顺序***）：
+	#被包装的最终实现类
+	impl=com.xitech.app.test.spi.impl.XitechSpiPrintImpl
+	#包装扩展类
+	dubbo=com.xitech.app.test.spi.impl.XitechSpiPrintWrapper
+	
+5. 在包装类的构造函数中注入XitechSpiPrint接口类型的变量（表示会将impl对应的实现类注入包装类）
+6. 在接口中的方法添加@Adaptive("impl")注解，其中impl表示被包装的实现类的key（参考步骤4中的配置）
+
+
+
+*******************************************************************************************
+
+
+Dubbo spi 普通扩展类
+
+1. 引入Dubbo依赖
+2. 在src/main/resources目录下创建目录：META-INF/dubbo, META-INF/dubbo/internal, META-INF/services三个中的一个即可
+3. 在步骤2中创建的目录下，创建一个文件，文件名是想要扩展的接口名（全限定名），例如：com.xitech.app.test.spi.interf.XitechSpiPrint
+4. 在文件中只能写入如下内容：
+	#被包装的最终实现类
+	impl=com.xitech.app.test.spi.impl.XitechSpiPrintImpl
+
+5. 在接口上添加@SPI("impl")注解，其中impl表示实现类的key（参考步骤4中的配置）

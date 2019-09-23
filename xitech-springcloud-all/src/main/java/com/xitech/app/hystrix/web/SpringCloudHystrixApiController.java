@@ -9,7 +9,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.xitech.app.hystrix.service.HystrixFeignService;
 
 @RestController
-@RequestMapping("/hystrixFeignApi")
+@RequestMapping("/hystrixFeignApiLocal")
 public class SpringCloudHystrixApiController {
 	
 	@RequestMapping("/content/{arg}")

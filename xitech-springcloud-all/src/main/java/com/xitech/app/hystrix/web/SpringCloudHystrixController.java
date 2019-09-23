@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.xitech.app.hystrix.entity.FeignEntity;
 import com.xitech.app.hystrix.service.HystrixFeignService;
 
 @RestController
@@ -19,12 +20,12 @@ public class SpringCloudHystrixController {
 	public String getContent(@PathVariable String arg) {
 		System.out.println("方法逻辑");
 		if("hystrix".equals(arg)) {
-			try {
-				Thread.sleep(3000);
+			/*try {
+				//Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 			return "正确结果!";
 		}else {
 			throw new IllegalArgumentException("参数非法");
@@ -52,16 +53,33 @@ public class SpringCloudHystrixController {
 	 * @return
 	 */
 	@RequestMapping("/content/feign/{arg}")
-	public String getFeignContent(@PathVariable String arg) {
-		try {
+	public String getFeignContent(@PathVariable("arg") String arg) {
+		/*try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		return hystrixFeignService.getContent(arg);
 	}
-	
+	/**
+	 * feign中使用降级容错（hystrix）
+	 * @param arg
+	 * @return
+	 */
+	@RequestMapping("/content/feign/pojo")
+	public String getFeignContent() {
+		/*try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		FeignEntity entity = new FeignEntity();
+		entity.setName("feign");
+		entity.setCode("code");
+		return hystrixFeignService.getContent(entity);
+	}
 	@RequestMapping("/dashboard")
 	public List<String> getDashboard() {
 		try {

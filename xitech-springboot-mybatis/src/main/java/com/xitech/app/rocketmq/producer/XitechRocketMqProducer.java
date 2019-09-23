@@ -29,11 +29,17 @@ public class XitechRocketMqProducer {
      */
     @Value("${apache.rocketmq.namesrvAddr}")
     private String namesrvAddr;
+    
+    /**
+     * sendMsgTimeout 
+     */
+    @Value("${apache.rocketmq.producer.sendMsgTimeout}")
+    private String sendMsgTimeout;
     // @PostConstruct //@PostContruct是spring框架的注解，在方法上加该注解会在项目启动的时候执行该方法，也可以理解为在spring容器初始化的时候执行该方法。
     public void defaultMQProducer() {
         //生产者的组名
         DefaultMQProducer producer = new DefaultMQProducer(producerGroup);
-        
+        producer.setSendMsgTimeout(Integer.valueOf(sendMsgTimeout));
         //指定NameServer地址，多个地址以 ; 隔开
         producer.setNamesrvAddr(namesrvAddr);
         try {
@@ -50,8 +56,8 @@ public class XitechRocketMqProducer {
             StopWatch stop = new StopWatch();
             stop.start();
  
-            for (int i = 0; i < 1000; i++) {
-                SendResult result = producer.send(message,new MessageQueueSelector() {
+            for (int i = 0; i < 100; i++) {
+                /*SendResult result = producer.send(message,new MessageQueueSelector() {
 					
 					@Override
 					public MessageQueue select(List<MessageQueue> mqs, Message msg, Object arg) {
@@ -62,7 +68,8 @@ public class XitechRocketMqProducer {
 					        //System.out.println();
 					        return mqs.get(index);
 					}
-				},20);
+				},20);*/
+            	SendResult result = producer.send(message);
                 System.out.println("发送响应：MsgId:" + result.getMsgId() + "，发送状态:" + result.getSendStatus());
             }
             stop.stop();

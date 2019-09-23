@@ -1,0 +1,76 @@
+原配置方式：
+  xx:
+	routes:
+       - id: test_route
+         uri: http://localhost:8088/test/head
+         predicates:
+         - Path=/test
+         filters:
+         - AddRequestHeader=X-Request-Acme,t-Header-value
+
+**spring cloud gateway网关（版本为2.1.2_RELEASE）不能路由到指定uri的原因是一下代码的更新：
+** 该部分代码是将请求的url与路由配置的uri进行合并
+	URI mergedUrl = UriComponentsBuilder.fromUri(uri)
+	// .uri(routeUri)
+	.scheme(routeUri.getScheme()).host(routeUri.getHost())
+	.port(routeUri.getPort()).build(encoded).toUri();
+	
+	
+正确的配置方式
+1. 配置
+xx:
+	routes:
+       - id: test_route
+         uri: http://localhost:8088/
+         predicates:
+         - Path=/test/head
+         filters:
+         - AddRequestHeader=X-Request-Acme,t-Header-value
+         
+2.访问方式：
+http://gateway_ip:gateway_port/test/head  【其中/test/head是匹配谓词的值】
+
+
+
+************************************************************************************************
+热部署：dev-tools
+
+1. 添加依赖
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-devtools</artifactId>
+	<optional>true</optional>
+	<scope>true</scope>
+</dependency>
+
+2. 添加devTools插件
+<plugin>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-maven-plugin</artifactId>
+	<configuration>
+		<!-- 若没有该配置项，则devtools不会起作用 -->
+		<fork>true</fork>
+	</configuration>
+</plugin>
+
+3. 测试： 修改方法返回值、修改代码、新增类均会导致服务自动重启
+
+
+
+**********************************************************************************************
+集成spring-data-jpa
+
+1. 添加依赖
+	<!-- mysql依赖 -->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+	</dependency>
+	<!-- spring-data-jpa依赖 -->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-data-jpa</artifactId>
+	</dependency>
+	
+	
+2. 创建实体类

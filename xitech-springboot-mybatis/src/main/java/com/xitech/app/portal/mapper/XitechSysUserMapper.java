@@ -12,5 +12,7 @@ public interface XitechSysUserMapper {
 
 	  @Select("SELECT * FROM xitech_sys_user WHERE id = #{id}")
 	  public XitechSysUser findSysUserById(@Param("id") String id);
+	  
+	  public XitechSysUser selectById(@Param("id")String id);
 
 }

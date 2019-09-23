@@ -46,3 +46,16 @@
 	#     ****** eureka.instance.hostname  表示注册中心的地址，在本配置文件中响应的配置项，server.port同理
 	#服务注册中心地址url  主机名和端口自定义，后缀"/eureka/"固定写法
 	eureka.client.service-url.defaultZone=http://${eureka.instance.hostname}:${server.port}/eureka/
+
+
+
+*************************************************************************************************************
+配置zone信息
+
+#本实例的zone信息
+eureka.instance.matadetaMap.zone= zone1
+
+#注册中心的zone信息
+eureka.client.service-url=zone1:xxxx
+eureka.client.service-url=zone2:xxxx
+eureka.client.availability-zones=zone1,zone2

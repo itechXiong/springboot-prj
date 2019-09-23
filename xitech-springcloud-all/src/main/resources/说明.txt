@@ -13,7 +13,7 @@
 3. Feign工作原理：
 	a. @EnableFeignClients会扫描包，并查找@FeignClient注解以及其类（严格来说是接口【@FeignClient只能修饰接口】），然后进行处理并加入到Spring Ioc中
 	b. 当进行调用时，通过jdk代理为@FeignClient中的每一个方法生成RestTemplate对象，该对象包含request请求需要的信息。
-	c. RestTemplate对象会创建request对象，并交由client处理（client值java的URLConnection、Apache的Http Client、OkHttp等）。
+	c. RestTemplate对象会创建request对象，并交由client处理（client可以是java的URLConnection、Apache的Http Client、OkHttp等）。
 	d. LoadBalanceClient最后会封装上一步的client对象，然后结合Ribbon负载均衡，在服务之间进行调用。
 	
 	
@@ -27,7 +27,12 @@
 	
 5. 配置属性
 	a. 指定的feignName ---> feign.client.config.'feignName'.xxx=
-	b. 全局                     ---> feign.client.config.default.xxx=
+	b. 全局                     ---> 
+		1). 在@EnableFiegnClients注解中增加以下属性
+			defaultConfiguration=DefaultFeignConfiguration.class
+			"DefaultFeignConfiguration"是配置类的名称，可自定义
+		2).在配置文件加入以下配置：
+			feign.client.config.default.xxx=
 	c. feign.client.default-to-properties=false 改变feign属性文件的优先级（默认是properties的属性值会覆盖java代码设置的属性值。）
 	
 6. 开启日志
@@ -45,7 +50,9 @@
 	
 8. http客户端替换
 	a. 添加依赖：feign的依赖、okHttp的依赖（org.github.openfeign -->  feign-okhttp)
-	b. 设置属性： feign.httpclient.enabled=false,feign.okhttp.enabled=true;
+	b. 设置属性： 
+		feign.httpclient.enabled=false,
+		feign.okhttp.enabled=true;
 	
 	
 9. feign集成ribbon和hystrix之后，首次调用可能失败的原因：由于Bean的装配以及懒加载机制导致的。
@@ -57,8 +64,14 @@
 
 11. 使用feign在服务之间调用时，token可能会丢失，此时需要在调用之前，将token加入request的header中。
 
+12. Load balancer does not have available server for client异常
+	需要设置ribbon.eureka.enabled: true
 
+13. feign的实现并未覆盖所有SpringMVC的功能，不支持传递POJO
 
+14. feignclient注解修饰的方法必须与被调用的方法保持一致（注解、参数、方法签名）
+
+15. @PathVariable后必须跟参数名，例如@PathVariable("arg")
 
 ********************************Spring-Cloud-Ribbon*********************
 

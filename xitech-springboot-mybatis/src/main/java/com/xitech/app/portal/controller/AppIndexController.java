@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,9 +38,12 @@ public class AppIndexController {
 		return xitechSysUserDao.findSysUserById(userId);
 	}
 	
-	@RequestMapping("/findUserByMapper")
-	public XitechSysUser findSysUserByMapper(){
-		return xitechSysUserMapper.findSysUserById("064dcbcf3aa24dff8931c4011816a035");
+	@RequestMapping("/findUserByMapper/{id}")
+	public XitechSysUser findSysUserByMapper(@PathVariable String id){
+		//return xitechSysUserMapper.findSysUserById("064dcbcf3aa24dff8931c4011816a035");
+		
+		return xitechSysUserMapper.selectById(id);
+		
 	}
 	
 	@RequestMapping("/insertUser")
