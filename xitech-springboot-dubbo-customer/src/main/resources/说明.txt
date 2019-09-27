@@ -1,0 +1,11 @@
+dubbo-spring-boot ：
+
+一、dubbo使用zookeeper作为注册中心，消费者与服务者使用zookeeper注册中心进行通讯
+1. 添加spring-cloud、dubbo、zookeeper、curator、curator-recipes依赖
+2. 添加dubbo依赖  ： **不能在bootstrap.yml中添加dubbo的配置信息，否则抛异常：No registry config found or it's not a valid config! The registry config is: <dubbo:registry valid="false" zookeeperProtocol="false" prefix="dubbo.registry" />**
+3. 在application.yml中添加配置信息
+	dubbo:
+	   registry: 
+	      client: curator
+	      address: zookeeper://127.0.0.1:2181
+

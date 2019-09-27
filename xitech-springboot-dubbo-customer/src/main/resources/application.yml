@@ -5,3 +5,7 @@ spring:
       name: xitech-springboot-dubbo-customer
 
      
+dubbo:
+   registry: 
+      client: curator
+      address: zookeeper://127.0.0.1:2181

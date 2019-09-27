@@ -12,7 +12,11 @@ dubbo:
       base-packages: com.xitech.app.provider.impl
    #dubbo 协议信息
    protocol: 
-      name: http
+      name: dubbo
       port: 9999
    registry:
-      address: N/A
+      client: curator
+      address: zookeeper://127.0.0.1:2181
+# zookeeper://10.10.242.45:2181
+#N/A #暴露给本地
+      

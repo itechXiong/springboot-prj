@@ -13,7 +13,7 @@ import com.xitech.app.interfaced.XitechDubboPrint;
 public class XitechSpringbootDubboCustomerApp 
 {
 	
-	@Reference(version = "1.0.0", url = "dubbo://127.0.0.1:9999")
+	@Reference(version = "1.0.0",timeout=100000)//, url = "dubbo://127.0.0.1:9999"
     private XitechDubboPrint printService;
 	
     public static void main( String[] args )

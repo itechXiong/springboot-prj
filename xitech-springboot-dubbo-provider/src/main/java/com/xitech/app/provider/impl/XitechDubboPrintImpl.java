@@ -3,7 +3,7 @@ package com.xitech.app.provider.impl;
 import org.apache.dubbo.config.annotation.Service;
 import com.xitech.app.interfaced.XitechDubboPrint;
 
-@Service//version = "1.0.0"
+@Service(version = "1.0.0")
 public class XitechDubboPrintImpl implements XitechDubboPrint {
 
 	@Override
