@@ -1,0 +1,18 @@
+
+#本地缓存配置 ---caffeine缓存
+#spring:
+#   cache:
+#      type:
+#         caffeine
+#      caffeine:
+#         spec:
+#            expireAfterAccess=10s
+
+
+#本地缓存配置 ---ehcache缓存
+spring:
+   cache:
+      type:
+         EHCACHE   
+      ehcache:
+         config: classpath:/local-cache/local-ehcache.xml

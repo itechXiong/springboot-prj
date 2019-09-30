@@ -8,7 +8,7 @@
          filters:
          - AddRequestHeader=X-Request-Acme,t-Header-value
 
-**spring cloud gateway网关（版本为2.1.2_RELEASE）不能路由到指定uri的原因是一下代码的更新：
+**spring cloud gateway网关（版本为2.1.2_RELEASE）不能路由到指定uri的原因是以下代码的更新：
 ** 该部分代码是将请求的url与路由配置的uri进行合并
 	URI mergedUrl = UriComponentsBuilder.fromUri(uri)
 	// .uri(routeUri)
@@ -73,4 +73,8 @@ http://gateway_ip:gateway_port/test/head  【其中/test/head是匹配谓词的�
 	</dependency>
 	
 	
-2. 创建实体类
+2. 创建实体类，添加@Entity注解，主键添加以下注解
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+
+3. 创建自定义Repository接口,接口继承CrudRepository<实体类, 主键类型>（还有其他类型的Repository），添加@Repository注解

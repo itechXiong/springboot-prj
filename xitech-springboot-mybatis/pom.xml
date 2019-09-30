@@ -25,6 +25,17 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-web</artifactId>
 	</dependency>
+	<!-- caffeine缓存依赖 -->
+	<dependency>
+         <groupId>com.github.ben-manes.caffeine</groupId>
+         <artifactId>caffeine</artifactId>
+     </dependency>
+     
+     <!-- Ehcache 依赖 -->
+	<dependency>
+	    <groupId>net.sf.ehcache</groupId>
+	    <artifactId>ehcache</artifactId>
+	</dependency>
 	<!-- 使用spring-boot的方式二  （该方式不会使用<parent></parent> 和不会引入 spring-boot-starter-web -->
 	<!-- Import dependency management from Spring Boot -->
 	<!-- <dependency>

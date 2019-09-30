@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,9 +40,10 @@ public class AppIndexController {
 	}
 	
 	@RequestMapping("/findUserByMapper/{id}")
+	@Cacheable(value = "EhcacheDefaultCache", key = "#id")
 	public XitechSysUser findSysUserByMapper(@PathVariable String id){
 		//return xitechSysUserMapper.findSysUserById("064dcbcf3aa24dff8931c4011816a035");
-		
+		System.out.println("访问了数据库,用户标识："+id);
 		return xitechSysUserMapper.selectById(id);
 		
 	}
