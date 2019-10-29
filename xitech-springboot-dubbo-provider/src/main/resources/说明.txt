@@ -41,3 +41,69 @@ Dubbo spi 普通扩展类
 	impl=com.xitech.app.test.spi.impl.XitechSpiPrintImpl
 
 5. 在接口上添加@SPI("impl")注解，其中impl表示实现类的key（参考步骤4中的配置）
+
+
+*******************************************************************************************
+服务暴露
+loadRegistries(true);结果： 
+ [registry://127.0.0.1:2181/org.apache.dubbo.registry.RegistryService?application=xitech-springboot-dubbo-provider&client=curator&dubbo=2.0.2&pid=13108&qos.enable=false&registry=zookeeper&release=2.7.3&timestamp=1569387300425] 
+ 
+ 
+ protocls结果：
+
+[<dubbo:protocol name="dubbo" port="9999" valid="true" id="dubbo" prefix="dubbo.protocols." />]
+
+
+pathKey：结果（接口全定名）
+com.xitech.app.interfaced.XitechDubboPrint
+
+
+URL
+	dubbo://10.10.245.38:9999/com.xitech.app.interfaced.XitechDubboPrint?anyhost=true&application=xitech-springboot-dubbo-provider&bean.name=ServiceBean:com.xitech.app.interfaced.XitechDubboPrint&bind.ip=10.10.245.38&bind.port=9999&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&interface=com.xitech.app.interfaced.XitechDubboPrint&methods=printMethod&pid=13108&qos.enable=false&register=true&release=2.7.3&side=provider&timestamp=1569387578409
+	
+	
+invoker  = ProxyFactory.getInvoker();
+	interface com.xitech.app.interfaced.XitechDubboPrint -> registry://10.10.242.45:2181/org.apache.dubbo.registry.RegistryService?application=xitech-springboot-dubbo-provider&client=curator&dubbo=2.0.2&export=dubbo%3A%2F%2F10.10.245.38%3A9999%2Fcom.xitech.app.interfaced.XitechDubboPrint%3Fanyhost%3Dtrue%26application%3Dxitech-springboot-dubbo-provider%26bean.name%3DServiceBean%3Acom.xitech.app.interfaced.XitechDubboPrint%26bind.ip%3D10.10.245.38%26bind.port%3D9999%26deprecated%3Dfalse%26dubbo%3D2.0.2%26dynamic%3Dtrue%26generic%3Dfalse%26interface%3Dcom.xitech.app.interfaced.XitechDubboPrint%26methods%3DprintMethod%26pid%3D10512%26qos.enable%3Dfalse%26register%3Dtrue%26release%3D2.7.3%26side%3Dprovider%26timestamp%3D1569390388974&pid=10512&qos.enable=false&registry=zookeeper&release=2.7.3&timestamp=1569390356562
+	
+protocol.export
+	key:
+		com.xitech.app.interfaced.XitechDubboPrint:9999
+		
+openServer
+
+	key:
+		10.10.245.38:9999
+		
+		
+
+createServer
+	dubbo://10.10.245.38:9999/com.xitech.app.interfaced.XitechDubboPrint?anyhost=true&application=xitech-springboot-dubbo-provider&bean.name=ServiceBean:com.xitech.app.interfaced.XitechDubboPrint&bind.ip=10.10.245.38&bind.port=9999&channel.readonly.sent=true&codec=dubbo&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&heartbeat=60000&interface=com.xitech.app.interfaced.XitechDubboPrint&methods=printMethod&pid=10512&qos.enable=false&register=true&release=2.7.3&side=provider&timestamp=156939038897
+	
+	
+new NettyServer()
+		
+	url
+		dubbo://10.10.245.38:9999/com.xitech.app.interfaced.XitechDubboPrint?anyhost=true&application=xitech-springboot-dubbo-provider&bean.name=ServiceBean:com.xitech.app.interfaced.XitechDubboPrint&bind.ip=10.10.245.38&bind.port=9999&channel.readonly.sent=true&codec=dubbo&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&heartbeat=60000&interface=com.xitech.app.interfaced.XitechDubboPrint&methods=printMethod&pid=11644&qos.enable=false&register=true&release=2.7.3&side=provider&timestamp=1569391859117
+		
+		
+		
+		
+		
+		
+		
+
+		
+调用设计的类
+		
+		
+		org.apache.dubbo.rpc.proxy.InvokerInvocationHandler
+		
+		
+		
+		
+		
+RpcInvocation的作用		
+		
+		
+		abstractProtocol:refer(Class<T> type, URL url)【AsyncToSyncInvoker---> dubboProtocol:protocolBindingRefer (DubboProtocol包含invokers列表变量) ----> dubboInvoker extends AbstractInvoker)】
+
